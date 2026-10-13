@@ -1,0 +1,88 @@
+
+{% if section.settings.show_announcement %}
+  <div
+    class="ww-announcement"
+    style="
+      --ww-announcement-bg: {{ section.settings.background_color }};
+      --ww-announcement-text: {{ section.settings.text_color }};
+    "
+  >
+    {% if section.settings.link != blank %}
+      <a
+        class="ww-announcement__link"
+        href="{{ section.settings.link }}"
+      >
+        {{ section.settings.message | escape }}
+      </a>
+    {% else %}
+      <p class="ww-announcement__message">
+        {{ section.settings.message | escape }}
+      </p>
+    {% endif %}
+  </div>
+{% endif %}
+
+<style>
+  .ww-announcement {
+    background: var(--ww-announcement-bg);
+    color: var(--ww-announcement-text);
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .ww-announcement__message {
+    margin: 0;
+  }
+
+  .ww-announcement__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ww-announcement__link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "WW Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Announcement message",
+      "default": "Free shipping on orders over ₹999"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Announcement link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Announcement Bar"
+    }
+  ]
+}
+{% endschema %}

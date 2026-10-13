@@ -1,0 +1,188 @@
+
+<section
+  id="custom-info-{{ section.id }}"
+  class="custom-info"
+  style="
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  "
+>
+  <div class="custom-info__container">
+
+    {% if section.settings.heading != blank %}
+      <h2 class="custom-info__heading">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {% endif %}
+
+    <div class="custom-info__blocks">
+      {% for block in section.blocks %}
+        <div class="custom-info__block" {{ block.shopify_attributes }}>
+
+          {% case block.type %}
+
+            {% when 'text' %}
+              {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title | escape }}</h3>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div>{{ block.settings.text }}</div>
+              {% endif %}
+
+            {% when 'product_metafield' %}
+              {% assign current_product = block.settings.metafield_product | default: product %}
+
+              {% if current_product != blank %}
+                {% assign metafield_value = current_product.metafields.custom.care_instructions %}
+
+                {% if metafield_value != blank %}
+                  <h3>{{ block.settings.metafield_title | escape }}</h3>
+                  <div>{{ metafield_value | metafield_tag }}</div>
+                {% else %}
+                  <p>Care instructions are not available.</p>
+                {% endif %}
+              {% else %}
+                <p>Select a product to display its metafield.</p>
+              {% endif %}
+
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.link_label != blank and section.settings.link_url != blank %}
+      <a class="custom-info__link" href="{{ section.settings.link_url }}">
+        {{ section.settings.link_label | escape }}
+      </a>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  #custom-info-{{ section.id }} {
+    padding: 40px 20px;
+  }
+
+  #custom-info-{{ section.id }} .custom-info__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  #custom-info-{{ section.id }} .custom-info__heading {
+    margin: 0 0 24px;
+    text-align: center;
+    color: inherit;
+  }
+
+  #custom-info-{{ section.id }} .custom-info__blocks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  #custom-info-{{ section.id }} .custom-info__block {
+    padding: 20px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+  }
+
+  #custom-info-{{ section.id }} .custom-info__block h3,
+  #custom-info-{{ section.id }} .custom-info__block p {
+    color: inherit;
+  }
+
+  #custom-info-{{ section.id }} .custom-info__link {
+    display: inline-block;
+    margin-top: 24px;
+    color: inherit;
+  }
+
+  @media (max-width: 749px) {
+    #custom-info-{{ section.id }} .custom-info__blocks {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom info",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Product information"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#222222"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block heading",
+          "default": "About this product"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Block text",
+          "default": "<p>Add your information here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "product_metafield",
+      "name": "Product metafield",
+      "settings": [
+        {
+          "type": "product",
+          "id": "metafield_product",
+          "label": "Choose product (optional)"
+        },
+        {
+          "type": "text",
+          "id": "metafield_title",
+          "label": "Metafield heading",
+          "default": "Care instructions"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Custom info",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
