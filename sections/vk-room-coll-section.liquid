@@ -1,0 +1,497 @@
+{% comment %}
+  Shop By Rooms
+  Editable Shopify section with repeatable room cards.
+{% endcomment %}
+
+<style>
+  #sbr-{{ section.id }} {
+    --sbr-bg: {{ section.settings.bg }};
+    --sbr-text: {{ section.settings.text_color }};
+    --sbr-sub: {{ section.settings.sub_color }};
+    --sbr-radius: {{ section.settings.radius }}px;
+    --sbr-gap: {{ section.settings.gap }}px;
+    --sbr-scale: {{ section.settings.hover_scale | divided_by: 100.0 }};
+    --sbr-opacity: {{ section.settings.hover_opacity | divided_by: 100.0 }};
+    --sbr-ratio: {{ section.settings.ratio }};
+
+    padding: {{ section.settings.pad_top }}px 5% {{ section.settings.pad_bottom }}px;
+    background: var(--sbr-bg);
+    color: var(--sbr-text);
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+  }
+
+  #sbr-{{ section.id }} *,
+  #sbr-{{ section.id }} *::before,
+  #sbr-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #sbr-{{ section.id }} .sbr-head {
+    text-align: center;
+    margin: 0 auto 36px;
+    max-width: 800px;
+  }
+
+  #sbr-{{ section.id }} .sbr-title {
+    margin: 0 0 8px;
+    color: var(--sbr-text);
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  #sbr-{{ section.id }} .sbr-subtitle {
+    margin: 0;
+    color: var(--sbr-sub);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  #sbr-{{ section.id }} .sbr-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(
+      {{ section.settings.cols_desktop }},
+      minmax(0, 1fr)
+    );
+    gap: var(--sbr-gap);
+  }
+
+  #sbr-{{ section.id }} .sbr-card {
+    display: block;
+    min-width: 0;
+    color: inherit;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  #sbr-{{ section.id }} .sbr-media {
+    width: 100%;
+    aspect-ratio: var(--sbr-ratio);
+    overflow: hidden;
+    border-radius: var(--sbr-radius);
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  #sbr-{{ section.id }} .sbr-media img,
+  #sbr-{{ section.id }} .sbr-media svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  #sbr-{{ section.id }} .sbr-name {
+    margin: 14px 0 5px;
+    color: var(--sbr-text);
+    font-size: {{ section.settings.name_size }}px;
+    line-height: 1.4;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  #sbr-{{ section.id }} .sbr-sale {
+    margin: 0;
+    color: var(--sbr-text);
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  #sbr-{{ section.id }} a.sbr-card:focus-visible {
+    outline: 2px solid var(--sbr-text);
+    outline-offset: 5px;
+  }
+
+  {% if section.settings.hover_effect %}
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+      #sbr-{{ section.id }} a.sbr-card:hover .sbr-media img {
+        transform: scale(var(--sbr-scale));
+        opacity: var(--sbr-opacity);
+      }
+
+      #sbr-{{ section.id }} a.sbr-card:hover .sbr-name {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+  {% endif %}
+
+  /* Tablet */
+  @media screen and (max-width: 989px) {
+    #sbr-{{ section.id }} {
+      padding-left: 4%;
+      padding-right: 4%;
+    }
+
+    #sbr-{{ section.id }} .sbr-grid {
+      grid-template-columns: repeat(
+        {{ section.settings.cols_tablet }},
+        minmax(0, 1fr)
+      );
+    }
+
+    #sbr-{{ section.id }} .sbr-head {
+      margin-bottom: 28px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 749px) {
+    #sbr-{{ section.id }} {
+      padding-top: {{ section.settings.pad_top | times: 0.7 | round }}px;
+      padding-bottom: {{ section.settings.pad_bottom | times: 0.7 | round }}px;
+    }
+
+    #sbr-{{ section.id }} .sbr-grid {
+      grid-template-columns: repeat(
+        {{ section.settings.cols_mobile }},
+        minmax(0, 1fr)
+      );
+      gap: {{ section.settings.gap | times: 0.6 | round }}px;
+    }
+
+    #sbr-{{ section.id }} .sbr-head {
+      margin-bottom: 22px;
+    }
+
+    #sbr-{{ section.id }} .sbr-name {
+      margin-top: 10px;
+      font-size: {{ section.settings.name_size | minus: 2 }}px;
+    }
+
+    #sbr-{{ section.id }} .sbr-sale {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<section id="sbr-{{ section.id }}" class="sbr">
+  {% if section.settings.title != blank or section.settings.subtitle != blank %}
+    <div class="sbr-head">
+      {% if section.settings.title != blank %}
+        <h2 class="sbr-title">
+          {{ section.settings.title | escape }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <p class="sbr-subtitle">
+          {{ section.settings.subtitle | escape }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="sbr-grid">
+    {% for block in section.blocks %}
+      {% assign image_alt = block.settings.image.alt | default: block.settings.name %}
+
+      {% if block.settings.link != blank %}
+        <a
+          class="sbr-card"
+          href="{{ block.settings.link | escape }}"
+          {{ block.shopify_attributes }}
+        >
+      {% else %}
+        <div
+          class="sbr-card"
+          {{ block.shopify_attributes }}
+        >
+      {% endif %}
+
+          <div class="sbr-media">
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '300, 450, 600, 900',
+                  sizes: '(max-width: 749px) 90vw, (max-width: 989px) 45vw, 30vw',
+                  alt: image_alt
+              }}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+
+          {% if block.settings.name != blank %}
+            <h3 class="sbr-name">
+              {{ block.settings.name | escape }}
+            </h3>
+          {% endif %}
+
+          {% if block.settings.sale != blank %}
+            <p class="sbr-sale">
+              {{ block.settings.sale | escape }}
+            </p>
+          {% endif %}
+
+      {% if block.settings.link != blank %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vk Shop By Rooms",
+  "tag": "section",
+  "class": "section-shop-by-rooms",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop By Rooms"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtext",
+      "default": "Give your home an elegant touch at affordable prices"
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "label": "Card title size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background",
+      "default": "#FDF0E3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "sub_color",
+      "label": "Subtext color",
+      "default": "#444444"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "cols_desktop",
+      "label": "Columns - Desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "cols_tablet",
+      "label": "Columns - Tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "cols_mobile",
+      "label": "Columns - Mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between cards",
+      "min": 8,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Image shape",
+      "default": "1 / 1",
+      "options": [
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Tall portrait"
+        },
+        {
+          "value": "4 / 3",
+          "label": "Landscape"
+        },
+        {
+          "value": "16 / 9",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Image hover effect"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_effect",
+      "label": "Enable hover effect",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover scale",
+      "min": 100,
+      "max": 130,
+      "step": 1,
+      "unit": "%",
+      "default": 108
+    },
+    {
+      "type": "range",
+      "id": "hover_opacity",
+      "label": "Hover opacity",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 85
+    }
+  ],
+  "blocks": [
+    {
+      "type": "room",
+      "name": "Room card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Room image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Room title",
+          "default": "Dining Room"
+        },
+        {
+          "type": "text",
+          "id": "sale",
+          "label": "Sale text",
+          "default": "Sale up to 40% off"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card link",
+          "info": "Optional. Link the image and text to a collection or page."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vk Shop By Rooms",
+      "blocks": [
+        {
+          "type": "room",
+          "settings": {
+            "name": "Dining Room",
+            "sale": "Sale up to 40% off"
+          }
+        },
+        {
+          "type": "room",
+          "settings": {
+            "name": "Living Room",
+            "sale": "Sale up to 30% off"
+          }
+        },
+        {
+          "type": "room",
+          "settings": {
+            "name": "Bedroom",
+            "sale": "Sale up to 25% off"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

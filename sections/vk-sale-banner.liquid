@@ -1,0 +1,484 @@
+{%- comment -%}
+  File: sections/image-banner.liquid
+
+  Features:
+  - Separate desktop and mobile images
+  - Desktop, tablet and mobile height controls
+  - Auto height support
+  - Cover and contain image fit
+  - Optional clickable banner
+  - Optional open in new tab
+  - Full-width or max-width layout
+  - Responsive padding and border radius
+  - Optional hover zoom and opacity
+{%- endcomment -%}
+
+{%- liquid
+  assign banner_link = section.settings.link
+  assign image_alt = section.settings.alt | default: section.settings.image.alt | default: shop.name
+  assign mobile_alt = section.settings.alt | default: section.settings.image_mobile.alt | default: shop.name
+
+  assign banner_tag = 'div'
+
+  if banner_link != blank
+    assign banner_tag = 'a'
+  endif
+
+  assign desktop_height = section.settings.desktop_height
+  assign tablet_height = section.settings.tablet_height
+  assign mobile_height = section.settings.mobile_height
+-%}
+
+<style>
+  #ib-{{ section.id }} {
+    background-color: {{ section.settings.bg }};
+    padding:
+      {{ section.settings.pad_top }}px
+      {{ section.settings.pad_x }}px
+      {{ section.settings.pad_bottom }}px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #ib-{{ section.id }} *,
+  #ib-{{ section.id }} *::before,
+  #ib-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #ib-{{ section.id }} .ib-wrap {
+    width: 100%;
+    max-width:
+      {% if section.settings.full_width %}
+        100%
+      {% else %}
+        {{ section.settings.max_width }}px
+      {% endif %};
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #ib-{{ section.id }} .ib-link {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ section.settings.radius }}px;
+    text-decoration: none;
+    color: inherit;
+    line-height: 0;
+  }
+
+  #ib-{{ section.id }} .ib-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  #ib-{{ section.id }} .ib-picture {
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+
+  #ib-{{ section.id }} .ib-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    object-fit: {{ section.settings.image_fit }};
+    object-position: center;
+    transition:
+      transform 0.5s ease,
+      opacity 0.5s ease;
+  }
+
+  /* Desktop height: 990px and above */
+  @media screen and (min-width: 990px) {
+    #ib-{{ section.id }} .ib-link,
+    #ib-{{ section.id }} .ib-picture,
+    #ib-{{ section.id }} .ib-image {
+      {% if desktop_height > 0 %}
+        height: {{ desktop_height }}px;
+      {% else %}
+        height: auto;
+      {% endif %}
+    }
+  }
+
+  /* Tablet height: 750px to 989px */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    #ib-{{ section.id }} .ib-link,
+    #ib-{{ section.id }} .ib-picture,
+    #ib-{{ section.id }} .ib-image {
+      {% if tablet_height > 0 %}
+        height: {{ tablet_height }}px;
+      {% elsif desktop_height > 0 %}
+        height: {{ desktop_height }}px;
+      {% else %}
+        height: auto;
+      {% endif %}
+    }
+  }
+
+  /* Mobile height: up to 749px */
+  @media screen and (max-width: 749px) {
+    #ib-{{ section.id }} {
+      padding-left: {{ section.settings.pad_x_mobile }}px;
+      padding-right: {{ section.settings.pad_x_mobile }}px;
+      padding-top: {{ section.settings.pad_top | times: 0.6 | round }}px;
+      padding-bottom: {{ section.settings.pad_bottom | times: 0.6 | round }}px;
+    }
+
+    #ib-{{ section.id }} .ib-link,
+    #ib-{{ section.id }} .ib-picture,
+    #ib-{{ section.id }} .ib-image {
+      {% if mobile_height > 0 %}
+        height: {{ mobile_height }}px;
+      {% elsif tablet_height > 0 %}
+        height: {{ tablet_height }}px;
+      {% elsif desktop_height > 0 %}
+        height: {{ desktop_height }}px;
+      {% else %}
+        height: auto;
+      {% endif %}
+    }
+
+    #ib-{{ section.id }} .ib-link {
+      border-radius: {{ section.settings.radius | times: 0.6 | round }}px;
+    }
+  }
+
+  /* Placeholder */
+  #ib-{{ section.id }} .ib-ph {
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ section.settings.radius }}px;
+  }
+
+  #ib-{{ section.id }} .ib-ph svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    background-color: #0000000d;
+  }
+
+  /* Hover effect */
+  {% if section.settings.hover_effect and banner_link != blank %}
+    @media (hover: hover) and (pointer: fine) {
+      #ib-{{ section.id }} a.ib-link:hover .ib-image {
+        transform: scale({{ section.settings.hover_scale | divided_by: 100.0 }});
+        opacity: {{ section.settings.hover_opacity | divided_by: 100.0 }};
+      }
+    }
+  {% endif %}
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #ib-{{ section.id }} .ib-image {
+      transition: none;
+    }
+
+    {% if section.settings.hover_effect and banner_link != blank %}
+      #ib-{{ section.id }} a.ib-link:hover .ib-image {
+        transform: none;
+      }
+    {% endif %}
+  }
+</style>
+
+<section
+  id="ib-{{ section.id }}"
+  class="ib"
+  aria-label="{{ section.settings.alt | default: 'Image banner' | escape }}"
+>
+  <div class="ib-wrap">
+
+    {% if section.settings.image != blank %}
+
+      <{{ banner_tag }}
+        class="ib-link"
+        {% if banner_link != blank %}
+          href="{{ banner_link }}"
+          {% if section.settings.new_tab %}
+            target="_blank"
+            rel="noopener noreferrer"
+          {% endif %}
+        {% endif %}
+      >
+
+        <picture class="ib-picture">
+
+          {% if section.settings.image_mobile != blank %}
+            <source
+              media="(max-width: 749px)"
+              srcset="
+                {{ section.settings.image_mobile | image_url: width: 500 }} 500w,
+                {{ section.settings.image_mobile | image_url: width: 750 }} 750w,
+                {{ section.settings.image_mobile | image_url: width: 1100 }} 1100w
+              "
+              sizes="100vw"
+            >
+          {% endif %}
+
+          {{
+            section.settings.image
+            | image_url: width: 2000
+            | image_tag:
+              class: 'ib-image',
+              loading: 'eager',
+              widths: '500, 750, 1100, 1500, 2000',
+              sizes: '100vw',
+              alt: image_alt
+          }}
+
+        </picture>
+
+      </{{ banner_tag }}>
+
+    {% elsif section.settings.image_mobile != blank %}
+
+      <{{ banner_tag }}
+        class="ib-link"
+        {% if banner_link != blank %}
+          href="{{ banner_link }}"
+          {% if section.settings.new_tab %}
+            target="_blank"
+            rel="noopener noreferrer"
+          {% endif %}
+        {% endif %}
+      >
+
+        {{
+          section.settings.image_mobile
+          | image_url: width: 1100
+          | image_tag:
+            class: 'ib-image',
+            loading: 'eager',
+            widths: '500, 750, 1100',
+            sizes: '100vw',
+            alt: mobile_alt
+        }}
+
+      </{{ banner_tag }}>
+
+    {% else %}
+
+      <div class="ib-ph">
+        {{ 'image' | placeholder_svg_tag }}
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vk Sale Banner",
+  "tag": "section",
+  "class": "section-image-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. The desktop image is used when no mobile image is selected."
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Image alt text",
+      "info": "Describe the banner image for accessibility."
+    },
+    {
+      "type": "header",
+      "content": "Link"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Banner link"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_tab",
+      "label": "Open link in new tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "Banner height"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "min": 0,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = Auto height"
+    },
+    {
+      "type": "range",
+      "id": "tablet_height",
+      "label": "Tablet height",
+      "min": 0,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = Use desktop height or auto"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 0,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = Use tablet height, desktop height, or auto"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover - fill banner"
+        },
+        {
+          "value": "contain",
+          "label": "Contain - show full image"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Section background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_x",
+      "label": "Side padding - Desktop",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_x_mobile",
+      "label": "Side padding - Mobile",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Hover effect"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_effect",
+      "label": "Enable hover effect",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover zoom",
+      "min": 100,
+      "max": 120,
+      "step": 1,
+      "unit": "%",
+      "default": 103
+    },
+    {
+      "type": "range",
+      "id": "hover_opacity",
+      "label": "Image opacity on hover",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 90
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vk Sale Banner"
+    }
+  ]
+}
+{% endschema %}

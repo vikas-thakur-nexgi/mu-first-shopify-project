@@ -1,0 +1,846 @@
+
+{%- comment -%}
+  File: sections/vk-countdown-banner.liquid
+  Responsive countdown banner with background image, overlay,
+  editable text, CTA button, and countdown timer.
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  #cd-{{ section.id }} {
+    --cd-overlay: {{ section.settings.overlay_color }};
+    --cd-overlay-op: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --cd-min: {{ section.settings.height_desktop }}px;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: var(--cd-min);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    background: {{ section.settings.fallback_bg }};
+    font-family: 'DM Sans', Arial, sans-serif;
+    color: {{ section.settings.text_color }};
+  }
+
+  #cd-{{ section.id }} .cd-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.bg_position }};
+    z-index: 0;
+  }
+
+  #cd-{{ section.id }} .cd-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--cd-overlay);
+    opacity: var(--cd-overlay-op);
+    pointer-events: none;
+  }
+
+  #cd-{{ section.id }} .cd-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: {{ section.settings.content_width }}px;
+    padding: {{ section.settings.pad_y }}px 20px;
+    box-sizing: border-box;
+  }
+
+  #cd-{{ section.id }} .cd-tag {
+    font-size: {{ section.settings.tag_size }}px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+    margin: 0 0 8px;
+    color: {{ section.settings.text_color }};
+  }
+
+  #cd-{{ section.id }} .cd-heading {
+    font-size: clamp(32px, 9vw, {{ section.settings.heading_size }}px);
+    font-weight: 700;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    margin: 0 0 20px;
+    color: {{ section.settings.heading_color }};
+  }
+
+  #cd-{{ section.id }} .cd-timer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: {{ section.settings.box_gap }}px;
+    margin: 0 0 22px;
+  }
+
+  #cd-{{ section.id }} .cd-box {
+    background: {{ section.settings.box_bg }};
+    color: {{ section.settings.box_text }};
+    border-radius: {{ section.settings.box_radius }}px;
+    min-width: {{ section.settings.box_size }}px;
+    padding: 10px 6px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #cd-{{ section.id }} .cd-num {
+    font-size: {{ section.settings.box_size | times: 0.38 | round }}px;
+    font-weight: 600;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  #cd-{{ section.id }} .cd-lbl {
+    font-size: {{ section.settings.box_size | times: 0.15 | round }}px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  #cd-{{ section.id }} .cd-desc {
+    font-size: {{ section.settings.desc_size }}px;
+    line-height: 1.6;
+    margin: 0 auto 22px;
+    max-width: 440px;
+    color: {{ section.settings.text_color }};
+    overflow-wrap: anywhere;
+  }
+
+  #cd-{{ section.id }} .cd-expired {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 0 0 18px;
+    display: none;
+    color: {{ section.settings.text_color }};
+  }
+
+  #cd-{{ section.id }} .cd-btn {
+    display: inline-block;
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }};
+    text-decoration: none;
+    padding: 13px 34px;
+    border-radius: {{ section.settings.btn_radius }}px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    transition: opacity 0.3s ease;
+  }
+
+  #cd-{{ section.id }} .cd-btn:hover {
+    opacity: 0.85;
+  }
+
+  #cd-{{ section.id }} .cd-btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  /* Parallax background on supported desktop layouts */
+  {% if section.settings.parallax %}
+    @media (min-width: 750px) {
+      #cd-{{ section.id }} {
+        clip-path: inset(0);
+      }
+
+      #cd-{{ section.id }} .cd-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+      }
+    }
+  {% endif %}
+
+  /* Tablet */
+  @media (max-width: 989px) {
+    #cd-{{ section.id }} {
+      --cd-min: {{ section.settings.height_tablet }}px;
+    }
+
+    #cd-{{ section.id }} .cd-box {
+      min-width: {{ section.settings.box_size | times: 0.9 | round }}px;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 749px) {
+    #cd-{{ section.id }} {
+      --cd-min: {{ section.settings.height_mobile }}px;
+      clip-path: none;
+    }
+
+    #cd-{{ section.id }} .cd-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+    }
+
+    #cd-{{ section.id }} .cd-content {
+      padding: {{ section.settings.pad_y | times: 0.7 | round }}px 16px;
+    }
+
+    #cd-{{ section.id }} .cd-heading {
+      margin-bottom: 18px;
+    }
+
+    #cd-{{ section.id }} .cd-timer {
+      gap: {{ section.settings.box_gap | times: 0.6 | round }}px;
+      margin-bottom: 18px;
+    }
+
+    #cd-{{ section.id }} .cd-box {
+      min-width: {{ section.settings.box_size | times: 0.72 | round }}px;
+      padding: 8px 4px;
+    }
+
+    #cd-{{ section.id }} .cd-num {
+      font-size: {{ section.settings.box_size | times: 0.3 | round }}px;
+    }
+
+    #cd-{{ section.id }} .cd-lbl {
+      font-size: 9px;
+    }
+
+    #cd-{{ section.id }} .cd-tag {
+      font-size: {{ section.settings.tag_size | minus: 2 }}px;
+    }
+
+    #cd-{{ section.id }} .cd-desc {
+      font-size: {{ section.settings.desc_size | minus: 1 }}px;
+    }
+
+    #cd-{{ section.id }} .cd-btn {
+      padding: 12px 26px;
+    }
+  }
+</style>
+
+<section
+  id="cd-{{ section.id }}"
+  class="cd"
+  data-mode="{{ section.settings.mode }}"
+  data-end="{{ section.settings.end_date | escape }}"
+  data-d="{{ section.settings.dur_days }}"
+  data-h="{{ section.settings.dur_hours }}"
+  data-m="{{ section.settings.dur_minutes }}"
+  data-s="{{ section.settings.dur_seconds }}"
+  data-repeat="{{ section.settings.repeat }}"
+>
+  {%- if section.settings.bg_image != blank -%}
+    {{
+      section.settings.bg_image
+      | image_url: width: 2400
+      | image_tag:
+        class: 'cd-bg',
+        loading: 'lazy',
+        widths: '750, 1100, 1500, 1920, 2400',
+        sizes: '100vw',
+        alt: ''
+    }}
+  {%- endif -%}
+
+  <div class="cd-overlay" aria-hidden="true"></div>
+
+  <div class="cd-content">
+    {%- if section.settings.tag != blank -%}
+      <p class="cd-tag">{{ section.settings.tag | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="cd-heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.show_timer -%}
+      <div class="cd-timer" role="timer" aria-label="Countdown timer" aria-live="off">
+        <div class="cd-box">
+          <span class="cd-num" data-u="d">00</span>
+          <span class="cd-lbl">{{ section.settings.lbl_days | escape }}</span>
+        </div>
+        <div class="cd-box">
+          <span class="cd-num" data-u="h">00</span>
+          <span class="cd-lbl">{{ section.settings.lbl_hours | escape }}</span>
+        </div>
+        <div class="cd-box">
+          <span class="cd-num" data-u="m">00</span>
+          <span class="cd-lbl">{{ section.settings.lbl_minutes | escape }}</span>
+        </div>
+        <div class="cd-box">
+          <span class="cd-num" data-u="s">00</span>
+          <span class="cd-lbl">{{ section.settings.lbl_seconds | escape }}</span>
+        </div>
+      </div>
+
+      <p class="cd-expired">{{ section.settings.expired_text | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="cd-desc">{{ section.settings.description | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.btn_label != blank and section.settings.btn_link != blank -%}
+      <a class="cd-btn" href="{{ section.settings.btn_link }}">
+        {{ section.settings.btn_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- if section.settings.show_timer -%}
+  <script>
+    (function () {
+      var root = document.getElementById('cd-{{ section.id }}');
+
+      if (!root || root.dataset.initialized === 'true') return;
+      root.dataset.initialized = 'true';
+
+      var query = function (unit) {
+        return root.querySelector('[data-u="' + unit + '"]');
+      };
+
+      var elements = {
+        d: query('d'),
+        h: query('h'),
+        m: query('m'),
+        s: query('s')
+      };
+
+      if (!elements.d || !elements.h || !elements.m || !elements.s) return;
+
+      var expiredEl = root.querySelector('.cd-expired');
+      var mode = root.dataset.mode;
+      var total = 0;
+      var end = 0;
+      var tick = null;
+      var storageKey = 'cd-{{ section.id }}';
+
+      function pad(value) {
+        return String(value).padStart(2, '0');
+      }
+
+      function getDuration() {
+        return (
+          (Number(root.dataset.d) || 0) * 86400 +
+          (Number(root.dataset.h) || 0) * 3600 +
+          (Number(root.dataset.m) || 0) * 60 +
+          (Number(root.dataset.s) || 0)
+        ) * 1000;
+      }
+
+      function setEnd() {
+        if (mode === 'date') {
+          var rawDate = (root.dataset.end || '').trim();
+
+          if (!rawDate) return false;
+
+          var timestamp = Date.parse(rawDate.replace(' ', 'T'));
+
+          if (!Number.isFinite(timestamp)) return false;
+
+          end = timestamp;
+          return true;
+        }
+
+        total = getDuration();
+
+        if (total <= 0) return false;
+
+        if (root.dataset.repeat === 'true') {
+          try {
+            var savedEnd = Number(localStorage.getItem(storageKey));
+
+            if (savedEnd > Date.now()) {
+              end = savedEnd;
+              return true;
+            }
+          } catch (error) {
+            // Continue without localStorage.
+          }
+        }
+
+        end = Date.now() + total;
+
+        if (root.dataset.repeat === 'true') {
+          try {
+            localStorage.setItem(storageKey, String(end));
+          } catch (error) {
+            // Countdown still works without localStorage.
+          }
+        }
+
+        return true;
+      }
+
+      function render() {
+        var remaining = Math.max(0, end - Date.now());
+
+        if (remaining <= 0) {
+          if (
+            mode === 'duration' &&
+            root.dataset.repeat === 'true' &&
+            total > 0
+          ) {
+            end = Date.now() + total;
+
+            try {
+              localStorage.setItem(storageKey, String(end));
+            } catch (error) {
+              // Continue without localStorage.
+            }
+
+            remaining = total;
+          } else {
+            elements.d.textContent = '00';
+            elements.h.textContent = '00';
+            elements.m.textContent = '00';
+            elements.s.textContent = '00';
+
+            if (expiredEl && expiredEl.textContent.trim()) {
+              expiredEl.style.display = 'block';
+            }
+
+            if (tick) {
+              clearInterval(tick);
+              tick = null;
+            }
+
+            return;
+          }
+        }
+
+        var seconds = Math.floor(remaining / 1000);
+
+        elements.d.textContent = pad(Math.floor(seconds / 86400));
+        elements.h.textContent = pad(Math.floor((seconds % 86400) / 3600));
+        elements.m.textContent = pad(Math.floor((seconds % 3600) / 60));
+        elements.s.textContent = pad(seconds % 60);
+      }
+
+      if (!setEnd()) {
+        if (expiredEl) {
+          expiredEl.textContent = 'Please configure a valid countdown date or duration.';
+          expiredEl.style.display = 'block';
+        }
+
+        return;
+      }
+
+      render();
+
+      if (
+        end > Date.now() ||
+        (mode === 'duration' && root.dataset.repeat === 'true')
+      ) {
+        tick = setInterval(render, 1000);
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VK Countdown Banner",
+  "tag": "section",
+  "class": "section-countdown-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Top text",
+      "default": "Get the most popular products"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Big heading",
+      "default": "70% OFF"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Stock is limited. Order now to avoid disappointment"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+
+    {
+      "type": "header",
+      "content": "Countdown timer"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_timer",
+      "label": "Show countdown",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Timer type",
+      "default": "date",
+      "options": [
+        {
+          "value": "date",
+          "label": "Fixed end date and time"
+        },
+        {
+          "value": "duration",
+          "label": "Set days, hours, minutes and seconds"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date and time",
+      "default": "2027-02-23 23:59",
+      "info": "Format: YYYY-MM-DD HH:MM. Without a timezone, the visitor's local timezone is used."
+    },
+    {
+      "type": "number",
+      "id": "dur_days",
+      "label": "Days",
+      "default": 131,
+      "info": "Used in manual duration mode."
+    },
+    {
+      "type": "range",
+      "id": "dur_hours",
+      "label": "Hours",
+      "min": 0,
+      "max": 23,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "dur_minutes",
+      "label": "Minutes",
+      "min": 0,
+      "max": 59,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "dur_seconds",
+      "label": "Seconds",
+      "min": 0,
+      "max": 59,
+      "step": 1,
+      "default": 42
+    },
+    {
+      "type": "checkbox",
+      "id": "repeat",
+      "label": "Restart when finished (manual mode)",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "expired_text",
+      "label": "Text when timer ends",
+      "default": "This offer has ended."
+    },
+    {
+      "type": "text",
+      "id": "lbl_days",
+      "label": "Label - Days",
+      "default": "Days"
+    },
+    {
+      "type": "text",
+      "id": "lbl_hours",
+      "label": "Label - Hours",
+      "default": "Hrs"
+    },
+    {
+      "type": "text",
+      "id": "lbl_minutes",
+      "label": "Label - Minutes",
+      "default": "Min"
+    },
+    {
+      "type": "text",
+      "id": "lbl_seconds",
+      "label": "Label - Seconds",
+      "default": "Sec"
+    },
+
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "label": "Parallax background",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax_mobile_off",
+      "label": "Turn off parallax on mobile",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Image position",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "fallback_bg",
+      "label": "Background color (no image)",
+      "default": "#2B2B2B"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Big heading color",
+      "default": "#FFC107"
+    },
+    {
+      "type": "color",
+      "id": "box_bg",
+      "label": "Timer box background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "box_text",
+      "label": "Timer box text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "#111111"
+    },
+
+    {
+      "type": "header",
+      "content": "Size and layout"
+    },
+    {
+      "type": "range",
+      "id": "tag_size",
+      "label": "Top text size",
+      "min": 11,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Big heading maximum size",
+      "min": 48,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "box_size",
+      "label": "Timer box size",
+      "min": 44,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "box_gap",
+      "label": "Gap between timer boxes",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "label": "Timer box corner radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content maximum width",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "pad_y",
+      "label": "Top and bottom padding",
+      "min": 20,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Minimum height - Desktop",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "height_tablet",
+      "label": "Minimum height - Tablet",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Minimum height - Mobile",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 440
+    }
+  ],
+  "presets": [
+    {
+      "name": "VK Countdown Banner"
+    }
+  ]
+}
+{% endschema %}
