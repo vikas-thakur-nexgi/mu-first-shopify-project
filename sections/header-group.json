@@ -44,17 +44,6 @@
         "padding-block-end": 15
       }
     },
-    "announcement_bar_xKLT9k": {
-      "type": "announcement-bar",
-      "name": "WW Announcement Bar",
-      "settings": {
-        "show_announcement": true,
-        "message": "Free shipping on orders over ₹999",
-        "link": "",
-        "background_color": "#000000",
-        "text_color": "#ffffff"
-      }
-    },
     "header_section": {
       "type": "header",
       "blocks": {
@@ -137,11 +126,22 @@
         "collection_inverse_logo": false,
         "text_color_transparent_collection": ""
       }
+    },
+    "announcement_bar_yUntfG": {
+      "type": "announcement-bar",
+      "name": "WW Announcement Bar",
+      "settings": {
+        "show_announcement": true,
+        "message": "Free shipping on orders over ₹999",
+        "link": "",
+        "background_color": "#000000",
+        "text_color": "#ffffff"
+      }
     }
   },
   "order": [
+    "announcement_bar_yUntfG",
     "header_announcements_9jGBFp",
-    "announcement_bar_xKLT9k",
     "header_section"
   ]
 }
