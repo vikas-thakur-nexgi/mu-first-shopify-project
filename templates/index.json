@@ -461,19 +461,19 @@
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 16,
+                "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {}
             },
-            "text_yCVXgn": {
+            "text_EYb4Qf": {
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>We make things that work better and last longer.</p>",
+                "text": "<p>Handcrafted lampshades designed to bring warmth, artistry and festive charm to your home.</p>",
                 "width": "fit-content",
-                "max_width": "normal",
+                "max_width": "none",
                 "alignment": "left",
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
@@ -496,7 +496,7 @@
           },
           "block_order": [
             "text_CjgCrC",
-            "text_yCVXgn"
+            "text_EYb4Qf"
           ]
         },
         "static-collection-card": {
@@ -607,14 +607,14 @@
         "columns": 3,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 8,
+        "columns_gap": 16,
         "bento_gap": 8,
-        "rows_gap": 8,
+        "rows_gap": 16,
         "max_collections": 4,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
-        "gap": 12,
+        "gap": 32,
         "background_color": "#FFF1E2",
         "padding-block-start": 48,
         "padding-block-end": 24
@@ -973,7 +973,7 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "horizontal_alignment": "center",
-        "gap": 28,
+        "gap": 32,
         "background_color": "#FFF1E2",
         "padding-block-start": 24,
         "padding-block-end": 48
