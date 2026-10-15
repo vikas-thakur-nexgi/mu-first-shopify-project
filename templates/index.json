@@ -508,7 +508,7 @@
             "placement": "below_image",
             "horizontal_alignment": "center",
             "vertical_alignment": "flex-start",
-            "collection_card_gap": 10,
+            "collection_card_gap": 5,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -524,7 +524,7 @@
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "h4",
                 "font": "var(--font-body--family)",
                 "font_size": "",
                 "line_height": "normal",
@@ -539,6 +539,32 @@
                 "padding-block-end": 4,
                 "padding-inline-start": 8,
                 "padding-inline-end": 8
+              },
+              "blocks": {}
+            },
+            "text_iqcp83": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p><strong>Sale up to 40% off</strong></p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
               },
               "blocks": {}
             },
@@ -562,7 +588,8 @@
             }
           },
           "block_order": [
-            "collection_title_D76kdV"
+            "collection_title_D76kdV",
+            "text_iqcp83"
           ]
         }
       },
