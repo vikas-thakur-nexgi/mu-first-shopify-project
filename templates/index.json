@@ -88,7 +88,7 @@
             "gap": 10,
             "background_color": "",
             "toggle_overlay": true,
-            "overlay_color": "#0000006B",
+            "overlay_color": "#0000006b",
             "overlay_style": "solid",
             "gradient_direction": "to top",
             "padding-block-start": 48,
@@ -188,7 +188,7 @@
             "gap": 10,
             "background_color": "",
             "toggle_overlay": true,
-            "overlay_color": "#0000006B",
+            "overlay_color": "#0000006b",
             "overlay_style": "solid",
             "gradient_direction": "to top",
             "padding-block-start": 48,
@@ -288,7 +288,7 @@
             "gap": 10,
             "background_color": "",
             "toggle_overlay": true,
-            "overlay_color": "#0000006B",
+            "overlay_color": "#0000006b",
             "overlay_style": "solid",
             "gradient_direction": "to top",
             "padding-block-start": 48,
@@ -615,7 +615,7 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "gap": 32,
-        "background_color": "#FFF1E2",
+        "background_color": "#fff1e2",
         "padding-block-start": 48,
         "padding-block-end": 24
       }
@@ -746,7 +746,7 @@
       "name": "t:names.marquee_section",
       "settings": {
         "movement_direction": "normal",
-        "background_color": "#FFF1E2",
+        "background_color": "#fff1e2",
         "padding-block-start": 24,
         "padding-block-end": 24,
         "gap_between_elements": 50
@@ -974,7 +974,7 @@
         "section_width": "page-width",
         "horizontal_alignment": "center",
         "gap": 32,
-        "background_color": "#FFF1E2",
+        "background_color": "#fff1e2",
         "padding-block-start": 24,
         "padding-block-end": 0
       }
@@ -1020,7 +1020,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>New In: Lighting Crafted for Celebration</h3>",
+                "text": "<h3>Small Detail. Big Transformation.</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1201,7 +1201,7 @@
         "section_width": "page-width",
         "horizontal_alignment": "center",
         "gap": 32,
-        "background_color": "#FFF1E2",
+        "background_color": "#fff1e2",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
@@ -1221,7 +1221,7 @@
         "mobile_height": 160,
         "image_fit": "cover",
         "radius": 0,
-        "bg": "#FFFFFF",
+        "bg": "#ffffff",
         "pad_top": 0,
         "pad_bottom": 0,
         "pad_x": 0,
@@ -1453,7 +1453,7 @@
         "section_width": "page-width",
         "horizontal_alignment": "center",
         "gap": 32,
-        "background_color": "#FFF1E2",
+        "background_color": "#fff1e2",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
@@ -1484,14 +1484,14 @@
         "parallax": true,
         "parallax_mobile_off": true,
         "bg_position": "center",
-        "fallback_bg": "#2B2B2B",
+        "fallback_bg": "#2b2b2b",
         "overlay_color": "#000000",
         "overlay_opacity": 50,
-        "text_color": "#FFFFFF",
-        "heading_color": "#FFC107",
-        "box_bg": "#FFFFFF",
+        "text_color": "#ffffff",
+        "heading_color": "#ffc107",
+        "box_bg": "#ffffff",
         "box_text": "#111111",
-        "btn_bg": "#FFFFFF",
+        "btn_bg": "#ffffff",
         "btn_text": "#111111",
         "tag_size": 15,
         "heading_size": 84,
@@ -1548,7 +1548,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>New In: Lighting Crafted for Celebration</h3>",
+                "text": "<h3>Beautiful Foundations. Effortless Gatherings.</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1729,7 +1729,7 @@
         "section_width": "page-width",
         "horizontal_alignment": "center",
         "gap": 32,
-        "background_color": "#FFF1E2",
+        "background_color": "#fff1e2",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
