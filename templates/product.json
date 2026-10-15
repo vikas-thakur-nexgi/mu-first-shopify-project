@@ -605,10 +605,6 @@
     "179207002456031561": {
       "type": "_blocks",
       "blocks": {
-        "judge_me_reviews_medals_WFM4jM": {
-          "type": "shopify://apps/judge-me-reviews/blocks/medals/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        },
         "judge_me_reviews_all_reviews_text_EVpBjb": {
           "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "disabled": true,
@@ -616,7 +612,6 @@
         }
       },
       "block_order": [
-        "judge_me_reviews_medals_WFM4jM",
         "judge_me_reviews_all_reviews_text_EVpBjb"
       ],
       "settings": {
