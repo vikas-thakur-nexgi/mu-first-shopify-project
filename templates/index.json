@@ -68,9 +68,118 @@
         "autoplay": true,
         "speed": 5
       }
+    },
+    "vk_room_coll_section_PBn38W": {
+      "type": "vk-room-coll-section",
+      "blocks": {
+        "room_QwRwAX": {
+          "type": "room",
+          "settings": {
+            "card_source": "manual",
+            "collection": "",
+            "page": "",
+            "name": "Dining Room",
+            "sale": "Sale up to 40% off",
+            "link": ""
+          }
+        },
+        "room_3LRw9f": {
+          "type": "room",
+          "settings": {
+            "card_source": "manual",
+            "collection": "",
+            "page": "",
+            "name": "Dining Room",
+            "sale": "Sale up to 40% off",
+            "link": ""
+          }
+        },
+        "room_8JjNzj": {
+          "type": "room",
+          "settings": {
+            "card_source": "manual",
+            "collection": "",
+            "page": "",
+            "name": "Dining Room",
+            "sale": "Sale up to 40% off",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "room_QwRwAX",
+        "room_3LRw9f",
+        "room_8JjNzj"
+      ],
+      "name": "Vk Shop collections",
+      "settings": {
+        "display_mode": "manual",
+        "collection_limit": 12,
+        "show_collection_product_count": false,
+        "title": "Shop By Rooms",
+        "subtitle": "Give your home an elegant touch at affordable prices",
+        "name_size": 18,
+        "bg": "#FDF0E3",
+        "text_color": "#111111",
+        "sub_color": "#444444",
+        "cols_desktop": 3,
+        "cols_tablet": 2,
+        "cols_mobile": "2",
+        "gap": 16,
+        "radius": 10,
+        "ratio": "1 / 1",
+        "pad_top": 40,
+        "pad_bottom": 40,
+        "hover_effect": true,
+        "hover_scale": 108,
+        "hover_opacity": 85
+      }
+    },
+    "vk_products_WNFW7B": {
+      "type": "vk-products",
+      "name": "Vk Products",
+      "settings": {
+        "title": "New In: Up to 10% Off",
+        "subtitle": "Discover our latest handcrafted pieces, freshly added to elevate your home with timeless style.",
+        "offertag": "Discover our latest handcrafted pieces, freshly added to elevate your home with timeless style.",
+        "name_size": 14,
+        "collection": "fashion",
+        "limit": 4,
+        "show_discount": true,
+        "badge_label": "New In",
+        "badge_bg": "#E59B12",
+        "badge_text": "#FFFFFF",
+        "show_rating": true,
+        "show_rating_value": true,
+        "show_rating_count": true,
+        "star_color": "#E5A000",
+        "show_button": false,
+        "button_label": "View Product",
+        "button_bg": "#111111",
+        "button_text_color": "#FFFFFF",
+        "button_border": "#111111",
+        "button_radius": 4,
+        "button_alignment": "center",
+        "button_full_width": false,
+        "bg": "#FFF1E2",
+        "text_color": "#111111",
+        "sub_color": "#444444",
+        "cols_desktop": 4,
+        "cols_tablet": 3,
+        "cols_mobile": "2",
+        "gap": 20,
+        "radius": 14,
+        "ratio": "4 / 5",
+        "pad_top": 40,
+        "pad_bottom": 40,
+        "hover_mode": "swap",
+        "hover_scale": 106
+      }
     }
   },
   "order": [
-    "vk_hero_banner_section_kynWnq"
+    "vk_hero_banner_section_kynWnq",
+    "vk_room_coll_section_PBn38W",
+    "vk_products_WNFW7B"
   ]
 }
