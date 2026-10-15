@@ -507,7 +507,7 @@
             "placement": "below_image",
             "horizontal_alignment": "center",
             "vertical_alignment": "flex-start",
-            "collection_card_gap": 8,
+            "collection_card_gap": 5,
             "background_color": "",
             "border": "none",
             "border_width": 1,
