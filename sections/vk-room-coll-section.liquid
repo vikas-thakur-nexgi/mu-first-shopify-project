@@ -1,6 +1,12 @@
+
 {% comment %}
-  Shop By Rooms
-  Editable Shopify section with repeatable room cards.
+  Section: VK Shop By Rooms
+  Features:
+  - Automatically display collections
+  - Manual cards
+  - Collection and page card sources
+  - Responsive grid
+  - Editable colors, spacing, image ratio and hover effects
 {% endcomment %}
 
 <style>
@@ -122,7 +128,6 @@
     }
   {% endif %}
 
-  /* Tablet */
   @media screen and (max-width: 989px) {
     #sbr-{{ section.id }} {
       padding-left: 4%;
@@ -141,7 +146,6 @@
     }
   }
 
-  /* Mobile */
   @media screen and (max-width: 749px) {
     #sbr-{{ section.id }} {
       padding-top: {{ section.settings.pad_top | times: 0.7 | round }}px;
@@ -189,66 +193,170 @@
   {% endif %}
 
   <div class="sbr-grid">
-    {% for block in section.blocks %}
-      {% assign image_alt = block.settings.image.alt | default: block.settings.name %}
+    {% if section.settings.display_mode == 'all_collections' %}
+      {% assign rendered_collections = 0 %}
 
-      {% if block.settings.link != blank %}
-        <a
-          class="sbr-card"
-          href="{{ block.settings.link | escape }}"
-          {{ block.shopify_attributes }}
-        >
-      {% else %}
-        <div
-          class="sbr-card"
-          {{ block.shopify_attributes }}
-        >
-      {% endif %}
+      {% for collection in collections limit: section.settings.collection_limit %}
+        {% if collection.handle != blank and collection.handle != 'frontpage' %}
+          {% assign rendered_collections = rendered_collections | plus: 1 %}
+          {% assign card_title = collection.title %}
+          {% assign card_link = collection.url %}
+          {% assign card_image = collection.featured_image %}
+          {% assign image_alt = card_image.alt | default: card_title %}
 
-          <div class="sbr-media">
-            {% if block.settings.image != blank %}
-              {{
-                block.settings.image
-                | image_url: width: 900
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '300, 450, 600, 900',
-                  sizes: '(max-width: 749px) 90vw, (max-width: 989px) 45vw, 30vw',
-                  alt: image_alt
-              }}
-            {% else %}
-              {{ 'image' | placeholder_svg_tag }}
-            {% endif %}
-          </div>
+          <a class="sbr-card" href="{{ card_link | escape }}">
+            <div class="sbr-media">
+              {% if card_image != blank %}
+                {{
+                  card_image
+                  | image_url: width: 900
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '300, 450, 600, 900',
+                    sizes: '(max-width: 749px) 90vw, (max-width: 989px) 45vw, 30vw',
+                    alt: image_alt
+                }}
+              {% else %}
+                {{ 'collection-1' | placeholder_svg_tag }}
+              {% endif %}
+            </div>
 
-          {% if block.settings.name != blank %}
             <h3 class="sbr-name">
-              {{ block.settings.name | escape }}
+              {{ card_title | escape }}
             </h3>
-          {% endif %}
 
-          {% if block.settings.sale != blank %}
-            <p class="sbr-sale">
-              {{ block.settings.sale | escape }}
-            </p>
-          {% endif %}
+            {% if section.settings.show_collection_product_count %}
+              <p class="sbr-sale">
+                {{ collection.products_count }} products
+              </p>
+            {% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
 
-      {% if block.settings.link != blank %}
-        </a>
-      {% else %}
-        </div>
+      {% if rendered_collections == 0 %}
+        <p>No collections are available to display.</p>
       {% endif %}
-    {% endfor %}
+
+    {% else %}
+      {% for block in section.blocks %}
+        {% liquid
+          assign card_title = block.settings.name
+          assign card_link = block.settings.link
+          assign card_image = block.settings.image
+          assign card_sale = block.settings.sale
+
+          if block.settings.card_source == 'collection' and block.settings.collection != blank
+            assign selected_collection = block.settings.collection
+            assign card_title = selected_collection.title
+            assign card_link = selected_collection.url
+
+            if selected_collection.featured_image != blank
+              assign card_image = selected_collection.featured_image
+            endif
+
+          elsif block.settings.card_source == 'page' and block.settings.page != blank
+            assign selected_page = block.settings.page
+            assign card_title = selected_page.title
+            assign card_link = selected_page.url
+          endif
+
+          assign image_alt = card_image.alt | default: card_title
+        %}
+
+        {% if card_link != blank %}
+          <a
+            class="sbr-card"
+            href="{{ card_link | escape }}"
+            {{ block.shopify_attributes }}
+          >
+        {% else %}
+          <div class="sbr-card" {{ block.shopify_attributes }}>
+        {% endif %}
+
+            <div class="sbr-media">
+              {% if card_image != blank %}
+                {{
+                  card_image
+                  | image_url: width: 900
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '300, 450, 600, 900',
+                    sizes: '(max-width: 749px) 90vw, (max-width: 989px) 45vw, 30vw',
+                    alt: image_alt
+                }}
+              {% else %}
+                {{ 'image' | placeholder_svg_tag }}
+              {% endif %}
+            </div>
+
+            {% if card_title != blank %}
+              <h3 class="sbr-name">
+                {{ card_title | escape }}
+              </h3>
+            {% endif %}
+
+            {% if card_sale != blank %}
+              <p class="sbr-sale">
+                {{ card_sale | escape }}
+              </p>
+            {% endif %}
+
+        {% if card_link != blank %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Vk Shop By Rooms",
+  "name": "Vk Shop collections",
   "tag": "section",
   "class": "section-shop-by-rooms",
   "max_blocks": 12,
   "settings": [
+    {
+      "type": "header",
+      "content": "Content source"
+    },
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Card source",
+      "options": [
+        {
+          "value": "manual",
+          "label": "Manual cards"
+        },
+        {
+          "value": "all_collections",
+          "label": "Automatically show collections"
+        }
+      ],
+      "default": "all_collections",
+      "info": "Automatic mode uses collection images, titles and links. Manual mode uses the Room card blocks below."
+    },
+    {
+      "type": "range",
+      "id": "collection_limit",
+      "label": "Maximum collections to show",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 12,
+      "info": "Used only in automatic collection mode."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_product_count",
+      "label": "Show product count",
+      "default": false,
+      "info": "Used only in automatic collection mode."
+    },
     {
       "type": "header",
       "content": "Heading"
@@ -440,6 +548,37 @@
       "name": "Room card",
       "settings": [
         {
+          "type": "select",
+          "id": "card_source",
+          "label": "Card content source",
+          "options": [
+            {
+              "value": "manual",
+              "label": "Manual content"
+            },
+            {
+              "value": "collection",
+              "label": "Shopify collection (automatic)"
+            },
+            {
+              "value": "page",
+              "label": "Shopify page (automatic)"
+            }
+          ],
+          "default": "manual",
+          "info": "Choose a collection or page to automatically use its title and link. Pages use the image selected below."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page"
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Room image"
@@ -460,37 +599,14 @@
           "type": "url",
           "id": "link",
           "label": "Card link",
-          "info": "Optional. Link the image and text to a collection or page."
+          "info": "Optional. Used for manual cards."
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Vk Shop By Rooms",
-      "blocks": [
-        {
-          "type": "room",
-          "settings": {
-            "name": "Dining Room",
-            "sale": "Sale up to 40% off"
-          }
-        },
-        {
-          "type": "room",
-          "settings": {
-            "name": "Living Room",
-            "sale": "Sale up to 30% off"
-          }
-        },
-        {
-          "type": "room",
-          "settings": {
-            "name": "Bedroom",
-            "sale": "Sale up to 25% off"
-          }
-        }
-      ]
+      "name": "Vk Shop collections"
     }
   ]
 }
