@@ -507,7 +507,7 @@
             "placement": "below_image",
             "horizontal_alignment": "center",
             "vertical_alignment": "flex-start",
-            "collection_card_gap": 5,
+            "collection_card_gap": 8,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -581,7 +581,7 @@
                 "border_width": 1,
                 "border_opacity": 100,
                 "border_color": "",
-                "border_radius": 0
+                "border_radius": 10
               },
               "blocks": {}
             }
@@ -894,7 +894,7 @@
                 "border_width": 1,
                 "border_opacity": 100,
                 "border_color": "",
-                "border_radius": 0,
+                "border_radius": 10,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -1121,7 +1121,7 @@
                 "border_width": 1,
                 "border_opacity": 100,
                 "border_color": "",
-                "border_radius": 0,
+                "border_radius": 10,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
