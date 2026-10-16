@@ -1,0 +1,113 @@
+{% liquid
+  assign breadcrumb_product = closest.product | default: product
+  assign breadcrumb_collection = collection
+
+  if breadcrumb_product != blank and breadcrumb_collection == blank
+    assign breadcrumb_collection = breadcrumb_product.collections.first
+  endif
+%}
+
+<nav class="ww-breadcrumb" aria-label="Breadcrumb" {{ block.shopify_attributes }}>
+  <ol class="ww-breadcrumb__list">
+    <li class="ww-breadcrumb__item">
+      <a href="{{ routes.root_url }}">Home</a>
+    </li>
+
+    {% if breadcrumb_collection != blank %}
+      <li class="ww-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="ww-breadcrumb__item">
+        <a href="{{ breadcrumb_collection.url }}">
+          {{ breadcrumb_collection.title | escape }}
+        </a>
+      </li>
+    {% endif %}
+
+    {% if breadcrumb_product != blank %}
+      <li class="ww-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="ww-breadcrumb__item ww-breadcrumb__item--current" aria-current="page">
+        {{ breadcrumb_product.title | escape }}
+      </li>
+    {% elsif collection != blank %}
+      <li class="ww-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="ww-breadcrumb__item ww-breadcrumb__item--current" aria-current="page">
+        {{ collection.title | escape }}
+      </li>
+    {% elsif page != blank %}
+      <li class="ww-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="ww-breadcrumb__item ww-breadcrumb__item--current" aria-current="page">
+        {{ page.title | escape }}
+      </li>
+    {% endif %}
+  </ol>
+</nav>
+
+{% stylesheet %}
+  .ww-breadcrumb {
+    width: 100%;
+    box-sizing: border-box;
+    background: #faf6ee;
+    color: #6f685f;
+    padding: 12px 20px;
+  }
+
+  .ww-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .ww-breadcrumb__item {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ww-breadcrumb__item a,
+  .ww-breadcrumb__item--current {
+    color: #6f685f;
+  }
+
+  .ww-breadcrumb__item a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .ww-breadcrumb__item a:hover {
+    opacity: 0.7;
+  }
+
+  .ww-breadcrumb__separator {
+    color: #6f685f;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ww-breadcrumb {
+      padding: 10px 16px;
+    }
+
+    .ww-breadcrumb__list {
+      gap: 5px;
+      font-size: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Breadcrumb"
+    }
+  ]
+}
+{% endschema %}
