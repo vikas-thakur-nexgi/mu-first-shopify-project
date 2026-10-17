@@ -1,6 +1,6 @@
 
 {% comment %}
-  vk - Responsive Image Slider
+  Vk Image Slider
   File: sections/ww-image-slider.liquid
 {% endcomment %}
 
@@ -15,11 +15,8 @@
       <div
         class="ww-slider__slide{% if forloop.first %} is-active{% endif %}"
         {{ block.shopify_attributes }}
+        aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
       >
-        {% if block.settings.link != blank %}
-          <a class="ww-slider__image-link" href="{{ block.settings.link }}">
-        {% endif %}
-
         {% if block.settings.image != blank %}
           <picture>
             {% if block.settings.mobile_image != blank %}
@@ -39,16 +36,13 @@
             }}
           </picture>
         {% else %}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'ww-slider__placeholder' }}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'ww-slider__image ww-slider__placeholder' }}
         {% endif %}
 
-        {% if block.settings.link != blank %}
-          </a>
-        {% endif %}
-
-        <div class="ww-slider__overlay"
-          style="--ww-overlay: {{ block.settings.overlay | divided_by: 100.0 }};">
-        </div>
+        <div
+          class="ww-slider__overlay"
+          style="--ww-overlay: {{ block.settings.overlay | divided_by: 100.0 }};"
+        ></div>
 
         <div class="ww-slider__content ww-slider__content--{{ block.settings.position }}">
           {% if block.settings.heading != blank %}
@@ -70,14 +64,7 @@
   </div>
 
   {% if section.blocks.size > 1 %}
-    <button class="ww-slider__arrow ww-slider__prev" type="button" aria-label="Previous slide">
-      &#8592;
-    </button>
-    <button class="ww-slider__arrow ww-slider__next" type="button" aria-label="Next slide">
-      &#8594;
-    </button>
-
-    <div class="ww-slider__dots">
+    <div class="ww-slider__dots" aria-label="Choose slide">
       {% for block in section.blocks %}
         <button
           type="button"
@@ -92,30 +79,49 @@
 
 <style>
   #ww-slider-{{ section.id }} {
-    position: relative;
     width: 100%;
+    position: relative;
     overflow: hidden;
-    background: #eee9e2;
     color: #fff;
+    background: #e9e3da;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__track {
+    position: relative;
+    overflow: hidden;
   }
 
   #ww-slider-{{ section.id }} .ww-slider__slide {
-    display: none;
-    position: relative;
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
     min-height: {{ section.settings.desktop_height }}px;
     overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition:
+      transform .7s ease,
+      opacity .7s ease,
+      visibility .7s ease;
+    pointer-events: none;
   }
 
   #ww-slider-{{ section.id }} .ww-slider__slide.is-active {
-    display: block;
-    animation: wwFade-{{ section.id }} .6s ease;
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
-  #ww-slider-{{ section.id }} .ww-slider__image-link,
+  #ww-slider-{{ section.id }} .ww-slider__slide.is-prev {
+    transform: translateY(-100%);
+  }
+
   #ww-slider-{{ section.id }} picture {
     display: block;
-    width: 100%;
-    height: 100%;
   }
 
   #ww-slider-{{ section.id }} .ww-slider__image,
@@ -145,13 +151,10 @@
 
   #ww-slider-{{ section.id }} .ww-slider__content--center {
     text-align: center;
-    left: 20px;
-    right: 20px;
   }
 
   #ww-slider-{{ section.id }} .ww-slider__content--right {
     text-align: right;
-    left: auto;
   }
 
   #ww-slider-{{ section.id }} .ww-slider__content h2 {
@@ -185,23 +188,6 @@
     transform: translateX(5px);
   }
 
-  #ww-slider-{{ section.id }} .ww-slider__arrow {
-    position: absolute;
-    z-index: 3;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(255,255,255,.75);
-    border-radius: 50%;
-    color: #fff;
-    background: rgba(0,0,0,.2);
-    cursor: pointer;
-  }
-
-  #ww-slider-{{ section.id }} .ww-slider__prev { left: 20px; }
-  #ww-slider-{{ section.id }} .ww-slider__next { right: 20px; }
-
   #ww-slider-{{ section.id }} .ww-slider__dots {
     position: absolute;
     z-index: 3;
@@ -226,11 +212,6 @@
     background: #fff;
   }
 
-  @keyframes wwFade-{{ section.id }} {
-    from { opacity: .5; }
-    to { opacity: 1; }
-  }
-
   @media (max-width: 749px) {
     #ww-slider-{{ section.id }} .ww-slider__slide {
       min-height: {{ section.settings.mobile_height }}px;
@@ -245,36 +226,43 @@
     #ww-slider-{{ section.id }} .ww-slider__content h2 {
       font-size: 28px;
     }
+  }
 
-    #ww-slider-{{ section.id }} .ww-slider__arrow {
-      width: 34px;
-      height: 34px;
+  @media (prefers-reduced-motion: reduce) {
+    #ww-slider-{{ section.id }} .ww-slider__slide {
+      transition: none;
     }
-
-    #ww-slider-{{ section.id }} .ww-slider__prev { left: 10px; }
-    #ww-slider-{{ section.id }} .ww-slider__next { right: 10px; }
   }
 </style>
 
 <script>
   (() => {
     const root = document.getElementById('ww-slider-{{ section.id }}');
+
     if (!root || root.dataset.initialized) return;
     root.dataset.initialized = 'true';
 
     const slides = [...root.querySelectorAll('.ww-slider__slide')];
     const dots = [...root.querySelectorAll('.ww-slider__dot')];
+
+    if (!slides.length) return;
+
     const autoplay = root.dataset.autoplay === 'true';
     const speed = Number(root.dataset.speed) || 5000;
-    let current = 0;
-    let timer;
 
-    if (slides.length < 2) return;
+    let current = 0;
+    let timer = null;
 
     function showSlide(index) {
+      const previous = current;
       current = (index + slides.length) % slides.length;
 
       slides.forEach((slide, i) => {
+        slide.classList.remove('is-prev');
+        if (i === previous && previous !== current) {
+          slide.classList.add('is-prev');
+        }
+
         slide.classList.toggle('is-active', i === current);
         slide.setAttribute('aria-hidden', i === current ? 'false' : 'true');
       });
@@ -285,40 +273,35 @@
       });
     }
 
-    function stop() {
-      clearInterval(timer);
+    function stopAutoplay() {
+      if (timer) clearInterval(timer);
+      timer = null;
     }
 
-    function start() {
-      stop();
-      if (autoplay && !document.hidden) {
+    function startAutoplay() {
+      stopAutoplay();
+
+      if (autoplay && slides.length > 1 && !document.hidden) {
         timer = setInterval(() => showSlide(current + 1), speed);
       }
     }
 
-    root.querySelector('.ww-slider__prev')?.addEventListener('click', () => {
-      showSlide(current - 1);
-      start();
-    });
-
-    root.querySelector('.ww-slider__next')?.addEventListener('click', () => {
-      showSlide(current + 1);
-      start();
-    });
-
     dots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
         showSlide(i);
-        start();
+        startAutoplay();
       });
     });
 
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-    document.addEventListener('visibilitychange', start);
+    root.addEventListener('mouseenter', stopAutoplay);
+    root.addEventListener('mouseleave', startAutoplay);
+    root.addEventListener('focusin', stopAutoplay);
+    root.addEventListener('focusout', startAutoplay);
+
+    document.addEventListener('visibilitychange', startAutoplay);
 
     showSlide(0);
-    start();
+    startAutoplay();
   })();
 </script>
 
@@ -386,7 +369,7 @@
         {
           "type": "image_picker",
           "id": "mobile_image",
-          "label": "Mobile image (optional)"
+          "label": "Mobile image"
         },
         {
           "type": "text",
@@ -424,7 +407,7 @@
         {
           "type": "range",
           "id": "overlay",
-          "label": "Image overlay darkness",
+          "label": "Overlay darkness",
           "min": 0,
           "max": 60,
           "step": 5,
