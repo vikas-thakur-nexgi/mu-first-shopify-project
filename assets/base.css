@@ -1856,10 +1856,10 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   font-weight: 300;
   letter-spacing: 1px;
   text-transform: uppercase;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
-.ui-test-collection-list .button-unstyled::before,
+/* .ui-test-collection-list .button-unstyled::before,
 .container-background-image .button-unstyled::before {
   content: "";
   position: absolute;
@@ -1869,7 +1869,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   height: 1px;
   background: currentColor;
   transition: transform 0.3s ease;
-}
+} */
 
 /* .ui-test-collection-list .button-unstyled::after,
 .container-background-image .button-unstyled::after {
