@@ -663,9 +663,7 @@
       "block_order": [
         "group_7hpLTP"
       ],
-      "custom_css": [
-        ".ui-test-collection-list .button-unstyled {display: inline-flex; align-items: center; gap: 8px; position: relative; font-size: 16px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: underline;}"
-      ],
+      "custom_css": [],
       "name": "t:names.collections_carousel",
       "settings": {
         "collection_list": [
