@@ -724,7 +724,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h3>New arrivals</h3>",
+                "text": "<h2>Luxury Party & Club Shirts</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -749,7 +749,7 @@
             "text_jxDqV7": {
               "type": "text",
               "settings": {
-                "text": "<p>Introducing our latest products, made especially for the season. Shop your favorites before they're gone!</p>",
+                "text": "<p>Made from Worlds's finest shirting fabric.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
