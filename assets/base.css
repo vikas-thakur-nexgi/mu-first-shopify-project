@@ -1855,7 +1855,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 .ui-test-collection-list .button-unstyled::after {
   content: "➜";
-  font-size: 20px;
+  font-size: 16px;
   transition: transform 0.3s ease;
 }
 
