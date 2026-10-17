@@ -1883,6 +1883,6 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   transform: translateY(-5px);
 }
 
-.collection-card .collection-card--image-bg .collection-card__content {
+.ui-test-collection-list .collection-card .collection-card--image-bg .collection-card__content {
   padding-bottom: 0px !important;
 }
