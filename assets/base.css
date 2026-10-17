@@ -1842,7 +1842,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 /*  */
 
 .ui-test-collection-list .collection-card__content p {
-  font-size: 15px;
+  /* font-size: 15px; */
   text-transform: capitalize;
 }
 .ui-test-collection-list .button-unstyled,
