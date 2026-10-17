@@ -1842,7 +1842,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 /*  */
 
 .ui-test-collection-list .button-unstyled {
-  display: inline-flex;
+  /* display: inline-flex; */
   align-items: center;
   gap: 8px;
   position: relative;
