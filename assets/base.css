@@ -1852,19 +1852,13 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-transform: uppercase;
   text-decoration: none;
   border-bottom: 1px solid currentColor;
-  transition: transform 0.3s ease;
 }
 
 .ui-test-collection-list .button-unstyled::after {
   content: "➝";
   font-size: 16px;
-  transition: transform 0.3s ease;
 }
 
 .ui-test-collection-list .button-unstyled:hover {
-  transform: translateY(-4px);
-}
-
-.ui-test-collection-list .button-unstyled:hover::after {
-  transform: translateX(4px);
+  border-bottom-width: 2px;
 }
