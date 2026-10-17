@@ -1851,7 +1851,17 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
-  border-bottom: 2px solid currentColor;
+}
+
+.ui-test-collection-list .button-unstyled::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.3s ease;
 }
 
 .ui-test-collection-list .button-unstyled::after {
@@ -1859,6 +1869,6 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   font-size: 16px;
 }
 
-.ui-test-collection-list .button-unstyled:hover {
-  border-bottom-width: 2px;
+.ui-test-collection-list .button-unstyled:hover::before {
+  transform: translateY(-5px);
 }
