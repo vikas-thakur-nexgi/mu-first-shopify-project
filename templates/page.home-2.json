@@ -1197,7 +1197,7 @@
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
                 "link_text_color": "",
-                "width": "fit-content",
+                "width": "custom",
                 "custom_width": 70,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100
@@ -1231,6 +1231,9 @@
       },
       "block_order": [
         "group_RGQPFG"
+      ],
+      "custom_css": [
+        ".ui-test-collection-list .collection-card__content {padding-bottom:0px !important;}"
       ],
       "name": "t:names.collections_carousel",
       "settings": {
