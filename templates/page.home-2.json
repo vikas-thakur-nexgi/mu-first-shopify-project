@@ -616,6 +616,25 @@
               },
               "blocks": {}
             },
+            "button_Eday4G": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Shop Now",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button-unstyled",
+                "custom_button_background": "#FFFFFF",
+                "custom_button_text": "{{ settings.color_palette.foreground }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
             "collection-card-image": {
               "type": "_collection-card-image",
               "name": "t:names.collection_card_image",
@@ -636,7 +655,8 @@
             }
           },
           "block_order": [
-            "collection_title_RJ3wY8"
+            "collection_title_RJ3wY8",
+            "button_Eday4G"
           ]
         }
       },
