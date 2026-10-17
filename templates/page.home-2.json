@@ -1007,7 +1007,7 @@
         "section_width": "full-width",
         "height": "small",
         "corner_radius": 0,
-        "border_width": 1,
+        "border_width": 0,
         "drop_shadow": true,
         "background_color": "",
         "padding-block-start": 40,
