@@ -647,12 +647,12 @@
       "settings": {
         "collection_list": [
           "fashion",
+          "t-shirt",
+          "jeans",
+          "shirt",
           "jackets",
           "sale",
-          "shirt",
-          "staff-picks",
-          "t-shirt",
-          "jeans"
+          "staff-picks"
         ],
         "layout_type": "carousel",
         "carousel_on_mobile": false,
