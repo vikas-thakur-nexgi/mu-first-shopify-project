@@ -1,0 +1,448 @@
+
+{% comment %}
+  vk - Responsive Image Slider
+  File: sections/ww-image-slider.liquid
+{% endcomment %}
+
+<section
+  id="ww-slider-{{ section.id }}"
+  class="ww-slider"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.speed | times: 1000 }}"
+>
+  <div class="ww-slider__track">
+    {% for block in section.blocks %}
+      <div
+        class="ww-slider__slide{% if forloop.first %} is-active{% endif %}"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.link != blank %}
+          <a class="ww-slider__image-link" href="{{ block.settings.link }}">
+        {% endif %}
+
+        {% if block.settings.image != blank %}
+          <picture>
+            {% if block.settings.mobile_image != blank %}
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ block.settings.mobile_image | image_url: width: 1000 }}"
+              >
+            {% endif %}
+            {{
+              block.settings.image
+              | image_url: width: 2400
+              | image_tag:
+                class: 'ww-slider__image',
+                loading: 'lazy',
+                widths: '750, 1100, 1500, 2000, 2400',
+                sizes: '100vw'
+            }}
+          </picture>
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'ww-slider__placeholder' }}
+        {% endif %}
+
+        {% if block.settings.link != blank %}
+          </a>
+        {% endif %}
+
+        <div class="ww-slider__overlay"
+          style="--ww-overlay: {{ block.settings.overlay | divided_by: 100.0 }};">
+        </div>
+
+        <div class="ww-slider__content ww-slider__content--{{ block.settings.position }}">
+          {% if block.settings.heading != blank %}
+            <h2>{{ block.settings.heading | escape }}</h2>
+          {% endif %}
+
+          {% if block.settings.button_label != blank %}
+            <a
+              class="ww-slider__button"
+              href="{{ block.settings.button_link | default: block.settings.link | default: routes.all_products_collection_url }}"
+            >
+              {{ block.settings.button_label | escape }}
+              <span aria-hidden="true">➝</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if section.blocks.size > 1 %}
+    <button class="ww-slider__arrow ww-slider__prev" type="button" aria-label="Previous slide">
+      &#8592;
+    </button>
+    <button class="ww-slider__arrow ww-slider__next" type="button" aria-label="Next slide">
+      &#8594;
+    </button>
+
+    <div class="ww-slider__dots">
+      {% for block in section.blocks %}
+        <button
+          type="button"
+          class="ww-slider__dot{% if forloop.first %} is-active{% endif %}"
+          aria-label="Go to slide {{ forloop.index }}"
+          aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+        ></button>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+<style>
+  #ww-slider-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #eee9e2;
+    color: #fff;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__slide {
+    display: none;
+    position: relative;
+    min-height: {{ section.settings.desktop_height }}px;
+    overflow: hidden;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__slide.is-active {
+    display: block;
+    animation: wwFade-{{ section.id }} .6s ease;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__image-link,
+  #ww-slider-{{ section.id }} picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__image,
+  #ww-slider-{{ section.id }} .ww-slider__placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.image_fit }};
+    object-position: center;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, var(--ww-overlay));
+    pointer-events: none;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__content {
+    position: absolute;
+    z-index: 2;
+    bottom: 55px;
+    left: 28px;
+    right: 28px;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__content--center {
+    text-align: center;
+    left: 20px;
+    right: 20px;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__content--right {
+    text-align: right;
+    left: auto;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__content h2 {
+    margin: 0 0 8px;
+    color: inherit;
+    font-size: clamp(26px, 3vw, 48px);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 4px;
+    color: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__button span {
+    display: inline-block;
+    transition: transform .3s ease;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__button:hover span {
+    transform: translateX(5px);
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__arrow {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(0,0,0,.2);
+    cursor: pointer;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__prev { left: 20px; }
+  #ww-slider-{{ section.id }} .ww-slider__next { right: 20px; }
+
+  #ww-slider-{{ section.id }} .ww-slider__dots {
+    position: absolute;
+    z-index: 3;
+    bottom: 18px;
+    left: 50%;
+    display: flex;
+    gap: 8px;
+    transform: translateX(-50%);
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  #ww-slider-{{ section.id }} .ww-slider__dot.is-active {
+    background: #fff;
+  }
+
+  @keyframes wwFade-{{ section.id }} {
+    from { opacity: .5; }
+    to { opacity: 1; }
+  }
+
+  @media (max-width: 749px) {
+    #ww-slider-{{ section.id }} .ww-slider__slide {
+      min-height: {{ section.settings.mobile_height }}px;
+    }
+
+    #ww-slider-{{ section.id }} .ww-slider__content {
+      bottom: 48px;
+      left: 20px;
+      right: 20px;
+    }
+
+    #ww-slider-{{ section.id }} .ww-slider__content h2 {
+      font-size: 28px;
+    }
+
+    #ww-slider-{{ section.id }} .ww-slider__arrow {
+      width: 34px;
+      height: 34px;
+    }
+
+    #ww-slider-{{ section.id }} .ww-slider__prev { left: 10px; }
+    #ww-slider-{{ section.id }} .ww-slider__next { right: 10px; }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('ww-slider-{{ section.id }}');
+    if (!root || root.dataset.initialized) return;
+    root.dataset.initialized = 'true';
+
+    const slides = [...root.querySelectorAll('.ww-slider__slide')];
+    const dots = [...root.querySelectorAll('.ww-slider__dot')];
+    const autoplay = root.dataset.autoplay === 'true';
+    const speed = Number(root.dataset.speed) || 5000;
+    let current = 0;
+    let timer;
+
+    if (slides.length < 2) return;
+
+    function showSlide(index) {
+      current = (index + slides.length) % slides.length;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === current);
+        slide.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === current);
+        dot.setAttribute('aria-current', i === current ? 'true' : 'false');
+      });
+    }
+
+    function stop() {
+      clearInterval(timer);
+    }
+
+    function start() {
+      stop();
+      if (autoplay && !document.hidden) {
+        timer = setInterval(() => showSlide(current + 1), speed);
+      }
+    }
+
+    root.querySelector('.ww-slider__prev')?.addEventListener('click', () => {
+      showSlide(current - 1);
+      start();
+    });
+
+    root.querySelector('.ww-slider__next')?.addEventListener('click', () => {
+      showSlide(current + 1);
+      start();
+    });
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        showSlide(i);
+        start();
+      });
+    });
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    document.addEventListener('visibilitychange', start);
+
+    showSlide(0);
+    start();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vk Image Slider",
+  "settings": [
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "min": 350,
+      "max": 900,
+      "step": 50,
+      "default": 750,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 300,
+      "max": 750,
+      "step": 50,
+      "default": 500,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Slide interval",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Blazers"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Slide link"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link (optional)"
+        },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Text position",
+          "options": [
+            { "value": "left", "label": "Bottom left" },
+            { "value": "center", "label": "Bottom center" },
+            { "value": "right", "label": "Bottom right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "overlay",
+          "label": "Image overlay darkness",
+          "min": 0,
+          "max": 60,
+          "step": 5,
+          "default": 15,
+          "unit": "%"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vk Image Slider",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}
