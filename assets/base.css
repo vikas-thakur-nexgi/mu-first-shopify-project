@@ -1851,7 +1851,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
+  border-bottom: 2px solid currentColor;
 }
 
 .ui-test-collection-list .button-unstyled::after {
