@@ -664,7 +664,7 @@
         "group_7hpLTP"
       ],
       "custom_css": [
-        ".ui-test-collection-list .button-unstyled {display: inline-flex; align-items: center; gap: 8px; position: relative; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: none;}"
+        ".ui-test-collection-list .button-unstyled {display: inline-flex; align-items: center; gap: 8px; position: relative; font-size: 16px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: underline;}"
       ],
       "name": "t:names.collections_carousel",
       "settings": {
