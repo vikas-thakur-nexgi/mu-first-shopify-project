@@ -1185,11 +1185,11 @@
               },
               "blocks": {}
             },
-            "button_NWg68g": {
+            "button_Gh84zR": {
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Shop now",
+                "label": "Shop Now",
                 "link": "shopify://collections/all",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
@@ -1225,7 +1225,7 @@
           },
           "block_order": [
             "collection_title_mJmYrJ",
-            "button_NWg68g"
+            "button_Gh84zR"
           ]
         }
       },
