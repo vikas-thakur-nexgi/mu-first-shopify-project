@@ -1718,60 +1718,6 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
-    },
-    "vk_image_slider_hwKmLM": {
-      "type": "vk-image-slider",
-      "blocks": {
-        "slide_LJBL7Q": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/ash-banner-img-4.webp",
-            "heading": "Blazers",
-            "button_label": "Shop Now",
-            "link": "",
-            "button_link": "",
-            "position": "left",
-            "overlay": 15
-          }
-        },
-        "slide_KYRRBi": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/ash-banner-img-3.webp",
-            "heading": "Blazers",
-            "button_label": "Shop Now",
-            "link": "",
-            "button_link": "",
-            "position": "left",
-            "overlay": 15
-          }
-        },
-        "slide_Qk8Eit": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/ash-banner-img-2.webp",
-            "heading": "Blazers",
-            "button_label": "Shop Now",
-            "link": "",
-            "button_link": "",
-            "position": "left",
-            "overlay": 15
-          }
-        }
-      },
-      "block_order": [
-        "slide_LJBL7Q",
-        "slide_KYRRBi",
-        "slide_Qk8Eit"
-      ],
-      "name": "Vk Scroll Slider",
-      "settings": {
-        "desktop_height": 500,
-        "mobile_height": 300,
-        "image_fit": "cover",
-        "autoplay": false,
-        "speed": 5
-      }
     }
   },
   "order": [
@@ -1781,7 +1727,6 @@
     "layered_slideshow_EDXyke",
     "hero_LzKGme",
     "collection_list_4r4kT4",
-    "product_list_UAMwUN",
-    "vk_image_slider_hwKmLM"
+    "product_list_UAMwUN"
   ]
 }
