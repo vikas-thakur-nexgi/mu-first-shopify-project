@@ -1882,3 +1882,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .container-background-image .button-unstyled:hover::before {
   transform: translateY(-5px);
 }
+
+.collection-card .collection-card--image-bg .collection-card__content {
+  padding-bottom: 0px !important;
+}
