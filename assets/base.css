@@ -1841,7 +1841,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 /*  */
 
-.ui-test-collection-list collection-card__content p {
+.ui-test-collection-list .collection-card__content p {
   font-size: 30px;
   text-transform: capitalize;
 }
