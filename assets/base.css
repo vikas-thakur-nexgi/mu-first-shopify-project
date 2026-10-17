@@ -1845,7 +1845,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   font-size: 15px;
   text-transform: capitalize;
 }
-.ui-test-collection-list .button-unstyled {
+.ui-test-collection-list .button-unstyled,
+.container-background-image .button-unstyled {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1858,7 +1859,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-decoration: none;
 }
 
-.ui-test-collection-list .button-unstyled::before {
+.ui-test-collection-list .button-unstyled::before,
+.container-background-image .button-unstyled::before {
   content: "";
   position: absolute;
   bottom: 0;
@@ -1869,11 +1871,14 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   transition: transform 0.3s ease;
 }
 
-.ui-test-collection-list .button-unstyled::after {
+.ui-test-collection-list .button-unstyled::after,
+.container-background-image .button-unstyled::after {
   content: "➝";
   font-size: 16px;
 }
 
-.ui-test-collection-list .button-unstyled:hover::before {
+.ui-test-collection-list .button-unstyled:hover::before,
+.container-background-image .button-unstyled:hover::before {
   transform: translateY(-5px);
 }
+
