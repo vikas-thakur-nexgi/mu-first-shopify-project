@@ -1881,4 +1881,3 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .container-background-image .button-unstyled:hover::before {
   transform: translateY(-5px);
 }
-
