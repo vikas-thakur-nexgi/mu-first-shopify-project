@@ -1871,11 +1871,11 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   transition: transform 0.3s ease;
 } */
 
-.ui-test-collection-list .button-unstyled::after,
+/* .ui-test-collection-list .button-unstyled::after,
 .container-background-image .button-unstyled::after {
   content: "➝";
   font-size: 16px;
-}
+} */
 
 .ui-test-collection-list .button-unstyled:hover::before,
 .container-background-image .button-unstyled:hover::before {
