@@ -827,6 +827,7 @@
       "block_order": [
         "layered_slide_GYDD78"
       ],
+      "disabled": true,
       "name": "t:names.layered_slideshow",
       "settings": {
         "section_width": "full-width",
