@@ -724,6 +724,32 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
+                "text": "<p>Introducing</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "{{ settings.color_palette.background }}",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_kBHRE7": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
                 "text": "<h2>Luxury Party & Club Shirts</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
@@ -792,6 +818,7 @@
           },
           "block_order": [
             "text_8TECpc",
+            "text_kBHRE7",
             "text_jxDqV7",
             "button_KWTznY"
           ]
